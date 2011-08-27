@@ -1,5 +1,8 @@
 Revision history for Mojo-Base-XS
 
+0.03  Sat Aug 27 13:38:02 2011
+      Fixed examples
+
 0.02  Sat Aug 27 13:23:12 2011
       Fixed memory leaks
       Fixed bug with generated default value
