@@ -19,8 +19,11 @@ no_index:
   directory:
     - inc
     - t
+    - xt
 requires:
-  perl: 5.8.8
+  XSLoader: 0
+  perl: 5.10.0
 resources:
-  license: http://dev.perl.org/licenses/
-version: 0.03
+  license: http://dev.perl.org/licenses
+  repository: http://github.com/yko/mojo-base-xs
+version: 0.04

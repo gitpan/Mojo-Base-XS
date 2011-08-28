@@ -3,10 +3,10 @@ package Mojo::Base::XS;
 use strict;
 use warnings;
 
-use 5.008008;
-require feature if $] >= 5.010;
+use 5.010;
+require feature;
 
-our $VERSION = 0.03;
+our $VERSION = 0.04;
 require XSLoader;
 
 XSLoader::load('Mojo::Base::XS', $VERSION);
@@ -92,6 +92,21 @@ Mojo::Base::XS implements fast accessrors for Mojo-based software.
 Code based on L<Class::XSAccessor> - fastes Perl accessors.
 
 It can also be used as standalone Mojo-style accessors generator.
+
+=head1 EXPORTS
+
+L<Mojo::Base::XS> exports following functions:
+
+=head2 has
+
+    has 'name';
+    has [qw/name1 name2 name3/];
+    has name => 'foo';
+    has name => sub {...};
+    has [qw/name1 name2 name3/] => 'foo';
+    has [qw/name1 name2 name3/] => sub {...};
+
+Create attributes, just like the attr method.
 
 =head1 FUNCTIONS
 
