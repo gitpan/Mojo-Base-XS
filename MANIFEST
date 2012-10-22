@@ -4,6 +4,7 @@ CXSAccessor.h
 hash_table.h
 inc/Module/AutoInstall.pm
 inc/Module/Install.pm
+inc/Module/Install/AuthorTests.pm
 inc/Module/Install/AutoInstall.pm
 inc/Module/Install/Base.pm
 inc/Module/Install/Can.pm
@@ -35,3 +36,7 @@ t/perlcriticrc
 t/pod-coverage.t
 t/pod.t
 XS.xs
+xt/perlcritic.t
+xt/perlcriticrc
+xt/pod-coverage.t
+xt/pod.t
