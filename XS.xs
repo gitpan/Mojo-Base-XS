@@ -91,8 +91,19 @@ STMT_START {                                                                 \
  **/
 #define INSTALL_NEW_CV_HASH_OBJ(package, xsub, name, default_value)          \
 STMT_START {                                                                 \
-  autoxs_hashkey hashkey;                                                    \
   const U32 key_len = strlen(name);                                          \
+  if (default_value != NULL && SvROK(default_value) &&                       \
+        SvTYPE(SvRV(default_value)) != SVt_PVCV)  {                          \
+        croak("Default has to be a code reference or constant value");       \
+  }                                                                          \
+  if (!isALPHA(name[0]) || !name[0] == '_') {                                \
+    croak("Attribute \"%s\" invalid", name);                                 \
+  }                                                                          \
+  int i;                                                                     \
+  for (i = 1; i < key_len; i++)                                              \
+    if (!isWORDCHAR(name[i]))                                                \
+        croak("Attribute \"%s\" invalid", name);                             \
+  autoxs_hashkey hashkey;                                                    \
   const U32 package_len = strlen(package);                                   \
   const U32 subname_len = key_len + package_len + 2;                         \
   hashkey.key = (char*)cxa_malloc((subname_len+1));                          \
@@ -150,7 +161,12 @@ __entersub_optimized__()
 
 #define ACCESSOR_BODY                                                        \
     if (!SvROK(self))                                                        \
-        XSRETURN_UNDEF;                                                      \
+        croak(                                                               \
+            "Accessor '%s' should be called on an object, "                  \
+            "but called on the '%s' clasname",                               \
+            readfrom.accessor_name,                                          \
+            SvPV_nolen(self)                                                 \
+        );                                                                   \
     HV *object = (HV*)SvRV(self);                                            \
     if (items > 1) {                                                         \
       SV* newvalue = newSVsv(ST(1));                                         \
@@ -173,7 +189,7 @@ __entersub_optimized__()
                                                                              \
     if (readfrom.default_value != NULL)                                      \
     {                                                                        \
-        SV **retval;                                                 \
+        SV **retval;                                                         \
         if (readfrom.default_coderef) {                                      \
             /* Coderef to generate defautl value */                          \
           {                                                                  \
@@ -187,13 +203,13 @@ __entersub_optimized__()
                   G_SCALAR|G_EVAL|G_KEEPERR);                                \
             SPAGAIN;                                                         \
             if (number == 1) {                                               \
-                retval = &POPs;                                               \
+                retval = &POPs;                                              \
             } else {                                                         \
                 XSRETURN_UNDEF;                                              \
             }                                                                \
             retval = hv_store(                                               \
                     object, readfrom.accessor_name, readfrom.accessor_len,   \
-                    newSVsv(*retval), readfrom.hash);                         \
+                    newSVsv(*retval), readfrom.hash);                        \
             if (!retval) {                                                   \
                 warn("hv_store failed\n\n\n\n");                             \
                 XSRETURN_UNDEF;                                              \

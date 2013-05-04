@@ -28,4 +28,4 @@ resources:
   bugtracker: http://github.com/yko/mojo-base-xs/issues
   license: http://dev.perl.org/licenses
   repository: http://github.com/yko/mojo-base-xs
-version: 0.06
+version: 0.07

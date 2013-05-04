@@ -31,10 +31,6 @@ t/lib/BaseTestXS/Base1.pm
 t/lib/BaseTestXS/Base2.pm
 t/mojo-base-xs.t
 t/mojo-base.t
-t/perlcritic.t
-t/perlcriticrc
-t/pod-coverage.t
-t/pod.t
 XS.xs
 xt/perlcritic.t
 xt/perlcriticrc
